@@ -1,4 +1,4 @@
-# Catch-The-Thief-Game
+# Catch The Thief
   In this game you and your friend are the police. When you were on guard duty, you encounter a crime. There is a thief who stole jewelry from a woman and ran away. You two dedicated cops are going after the thief as you are supposed to... And suddenly the thief disappears on wheatfield. You are jumping into the field and looking for the thief. Here is where the game begins...
 
 ## Rounds
