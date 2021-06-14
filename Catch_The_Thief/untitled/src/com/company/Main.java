@@ -39,20 +39,24 @@ public class Main {
             System.out.println("\n-Round 1- (Catch The Thief)\n\n"
                     + "You are only able the start from any corner. But thief can be anywhere but outermost frames...");
 
-            System.out.println("\nPlayer 1:");
-            int start1 = isValidAnswer1();
-            Police police1 = new Police(start1);
-            System.out.println("\nPlayer 2:");
-            int start2 = isValidAnswer1();
-            Police police2 = new Police(start2);
+            System.out.println("\nName of Player 1:");
+            String name1 = scanner.nextLine();
+            System.out.println("\nName of Player 2:");
+            String name2 = scanner.nextLine();
+            int start1 = isValidAnswer(name1);
+            int start2 = isValidAnswer(name2);
+
+            //Creating players
+            Police police1 = new Police(start1,name1);
+            Police police2 = new Police(start2,name2);
 
             Thief thief = new Thief(46);
-            System.out.println("\nPlayer 1 started from --> " +start1
-                    + "\nPlayer 2 started from --> "+ start2);
+            System.out.println("\n"+police1.getName()+" started from --> " +start1
+                    + "\n"+police2.getName()+" started from --> "+ start2);
 
             //Round 1/0_
-            System.out.println("\nDuring the game you'll encounter with the terms of such as 'Yellow Frame',  'Red Frame' and 'White Frame: " +
-                    "\nYellow Frame = Yellow frames had been visited by thief before. The game'll let you know what are those." +
+            System.out.println("\nDuring the game you'll encounter with the terms of such as 'Yellow Frame', 'Red Frame' and 'White Frame: " +
+                    "\nYellow Frame = That frame had been visited by thief before. The game will let you know what are those." +
                     "\nRed Frame = The thief is somewhere around you." +
                     "\nWhite Frame = No need to worries.");
 
@@ -63,7 +67,7 @@ public class Main {
                 //Thief's move
                 System.out.println("\nThief moved from " + thief.getFrame()+ "nd frame.");
                 thief.move();
-                thief.isAnyCop(thief.getFrame(), police1.getFrame(), police2.getFrame());
+                thief.isAnyCop(thief.getFrame(), police1, police2);
                 //If thief won
                 if(thief.getFrame()==police1.getFrame() || thief.getFrame()==police2.getFrame()) {
                     System.out.println("\nIIIIIIIIIIIIIIIIIIIII\nThief put you two clumsy cops to sleep and ran away. He never ever seen again...");
@@ -73,28 +77,28 @@ public class Main {
                         break;
                     }
                 }
-                int turn =1;
+
                 //Player 1's move
-                printRound(police1.getFrame(),police2.getFrame(),thief.getAllFrames());
-                isValidAnswer2(police1,police2,1);
+                printRound(police1,police2,thief.getAllFrames());
+                police1.move();
                 //If won
                 if(thief.getFrame()==police1.getFrame()) {
                     lastShot(thief.getWhereToHide(), thief.getAllFrames(), thief.isHidden());
                     break;
                 }
                 //Search for thief
-                police1.anyRedFrame(police1.getFrame(), thief.getFrame());
+                police1.anyRedFrame(police1, thief.getFrame());
 
 
                 //Player 2's move
-                printRound(police1.getFrame(),police2.getFrame(),thief.getAllFrames());
-                isValidAnswer2(police1,police2,2);
+                printRound(police1,police2,thief.getAllFrames());
+                police2.move();
                 if(thief.getFrame()==police2.getFrame()) {
                     lastShot(thief.getWhereToHide(), thief.getAllFrames(), thief.isHidden());
                     break;
                 }
                 //Search for thief
-                police2.anyRedFrame(police2.getFrame(), thief.getFrame());
+                police2.anyRedFrame(police2, thief.getFrame());
             }
             boolean newGame = again();
             if(!newGame){
@@ -105,11 +109,11 @@ public class Main {
 
     }
 
-    public static void printRound(int player1Frame, int player2Frame, ArrayList<Integer> thiefFrame) {
+    public static void printRound(Police police1, Police police2, ArrayList<Integer> thiefFrame) {
 
         System.out.println("\n--------------------------\n" +
-                "P1 Current Frame => "+player1Frame
-                +"\nP2 Current Frame => "+player2Frame
+                police1.getName()+"'s Current Frame => "+police1.getFrame()
+                +"\n"+police2.getName()+"'s Current Frame => "+police2.getFrame()
                 +"\nYellow Frames => "+thiefFrame
                 +"\n--------------------------\n");
 
@@ -122,11 +126,11 @@ public class Main {
             System.out.println(allFrames + "\nNow you have one more shot to get higher score...\nThief hid the jewelries where he passed. Make your best shot\n");
             int guess = scanner.nextInt();
             if(guess == jewelries) {
-                System.out.println("CONGRATULATIONS!!!. You won the game with the possible highest score!!!");
+                System.out.println("CONGRATULATIONS!!! You won the game with the possible highest score!!!");
                 return true;
             }
             System.out.println("Jewelries was hidden at "+jewelries+
-                    "\nYour answer ("+guess+")");
+                    "\nYour answer was "+guess);
             System.out.println("You missed the highest score chance. Congratulations!!! You WON the game...");
             return false;
 
@@ -144,61 +148,21 @@ public class Main {
         return !again.equals("n");
     }
 
-    public static int isValidAnswer1() {
+    public static int isValidAnswer(String police) {
         Scanner scanner = new Scanner(System.in);
-        int answer;
+        int answer = 0;
         while(true){
-            answer = 0;
-            System.out.println("Choose where you want to start...(12-19-82-89)");
+
+            System.out.println("\n"+police+"'s initial frame...(1-10-91-100) :");
             if(scanner.hasNextInt()){
                 answer = scanner.nextInt();
-                if((answer == 12) || (answer == 19) || (answer == 82) || (answer == 89)) {
+                if((answer == 1) || (answer == 10) || (answer == 91) || (answer == 100)) {
                     break;
                 }
             }
-            System.out.println("Invalid Answer!!!");
+            System.out.println("You can only start from any corner. Please provide valid number!!!");
         }
 
         return answer;
-    }
-
-    public static void isValidAnswer2(Police police1, Police police2, int turn){
-        Scanner scanner = new Scanner(System.in);
-        //If player 1
-        if(turn == 1) {
-            while(true) {
-                System.out.println("Your current frame (" + police1.getFrame()+")\n"
-                        + "Preferable frames => " + police1.neighNumbers(police1.getFrame()) +"\nPlayer 1's turn. Where do you wanna check?");
-                int nextFrame = scanner.nextInt();
-                if(contains(police1.neighNumbers(police1.getFrame()),nextFrame)){
-                    police1.move(nextFrame);
-                    break;
-                }
-                System.out.println("Invalid Answer!!!\n");
-            }
-
-        }
-        //If player 2
-        else if(turn ==2) {
-
-            while(true) {
-                System.out.println("Your current frame (" + police2.getFrame()+")\n"
-                        + "Preferable frames => " + police2.neighNumbers(police2.getFrame()) + "\nPlayer 2's turn. Where do you wanna check?");
-                int nextFrame = scanner.nextInt();
-                if(contains(police2.neighNumbers(police2.getFrame()),nextFrame)) {
-                    police2.move(nextFrame);
-                    break;
-                }
-                System.out.println("Invalid Answer!!!\n");
-            }
-
-        }
-    }
-
-    public static boolean contains(ArrayList<Integer> array, int answer) {
-        if(array.contains(answer)) {
-            return true;
-        }
-        return false;
     }
 }

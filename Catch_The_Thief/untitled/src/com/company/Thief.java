@@ -2,7 +2,7 @@ package com.company;
 
 import java.util.ArrayList;
 
-public class Thief extends Police{
+public class Thief {
 
     private int frame;
     private int whereToHide = 0;
@@ -29,11 +29,6 @@ public class Thief extends Police{
         return allFrames;
     }
 
-    public void setAllFrames(ArrayList<Integer> allFrames) {
-        this.allFrames = allFrames;
-    }
-
-
     public int getWhereToHide() {
         return whereToHide;
     }
@@ -43,13 +38,13 @@ public class Thief extends Police{
     }
 
     public Thief(int frame) {
-        super(frame);
         this.frame = frame;
     }
 
     public void move() {
+        Police thief = new Police(this.frame,"thief");
         hide();
-        ArrayList<Integer> neighFrames = neighNumbers(getFrame());
+        ArrayList<Integer> neighFrames = thief.neighNumbers();
         int newFrame = neighFrames.get((int) Math.floor(Math.random() * neighFrames.size()));
         if(this.allFrames.contains(newFrame)){
             move();
@@ -62,22 +57,21 @@ public class Thief extends Police{
 
 
     public void hide() {
-        setHidden(true);
         int hide = (int) Math.round(Math.random());
         if(hide == 1) {
+            setHidden(true);
             setWhereToHide(getFrame());
         }
     }
 
     //Checks if there is any cops around preferred frame
-    public void isAnyCop(int thiefFrame, int cop1Frame, int cop2Frame) {
-        ArrayList<Integer> array1 = neighNumbers(cop1Frame);
-        ArrayList<Integer> array2 = neighNumbers(cop2Frame);
-        if(array1.contains(thiefFrame)) {
-            System.out.println("(RED FRAME) The thief stepped onto the Player 1's range!!!");
+    public void isAnyCop(int thiefFrame, Police police1, Police police2) {
+
+        if(police1.neighNumbers().contains(thiefFrame)) {
+            System.out.println("(RED FRAME) The thief stepped into the "+police1.getName()+"'s range!!!");
         }
-        if(array2.contains(thiefFrame)){
-            System.out.println("(RED FRAME) The thief stepped onto the Player 2's range!!!");
+        if(police2.neighNumbers().contains(thiefFrame)){
+            System.out.println("(RED FRAME) The thief stepped into the "+ police2.getName() +"'s range!!!");
         }
 
     }

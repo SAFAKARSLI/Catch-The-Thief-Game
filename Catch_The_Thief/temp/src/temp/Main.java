@@ -1,6 +1,5 @@
 package temp;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -92,7 +91,7 @@ public class Main {
 						+ "\nYou won the game!!!");
 				System.out.println("Do you wanna play again?(y/n)");
 				String again = scanner.next();
-				if(again == "n") {
+				if(again.equals("n")) {
 					round1Quit=true;
 					exit=true;
 				}else {

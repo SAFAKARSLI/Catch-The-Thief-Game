@@ -2,7 +2,7 @@ package temp;
 
 import java.util.ArrayList;
 
-public class Thief extends Police{
+public class Thief extends Police {
 
 	private int frame = (int) Math.floor(Math.random() * 100) + 1;
 	private int whereToHide = 0;

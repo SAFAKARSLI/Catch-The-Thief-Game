@@ -6,7 +6,7 @@ public class Police {
 	
 	private int frame;
 	private ArrayList<Integer> allFrames = new ArrayList<Integer>();
-	private boolean cought = false;
+
 	
 	
 	public Police(int frame) {
@@ -20,15 +20,6 @@ public class Police {
 
 	public void setAllFrames(ArrayList<Integer> allFrames) {
 		this.allFrames = allFrames;
-	}
-
-
-	public boolean isCought() {
-		return cought;
-	}
-
-	public void setCought(boolean cought) {
-		this.cought = cought;
 	}
 
 	public int getFrame() {
